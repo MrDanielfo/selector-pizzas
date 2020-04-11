@@ -1,0 +1,346 @@
+*, *::before, *::after {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+}
+
+html {
+     box-sizing: inherit;
+     font-family: 'Oswald', sans-serif;
+}
+
+img {
+     max-width: 100%;
+}
+
+.contenedor-general {
+     max-width: 100%;
+     width: 1280px;
+     height: 100vh;
+     background: white;
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     grid-template-rows: repeat(3, 1fr);
+}
+
+@media (min-width: 1400px) {
+     .contenedor-general {
+          width: 100%;
+     }
+}
+
+.contenedor-general h1 {
+     font-size: 3em;
+     text-align: center;
+     grid-row: 1 / 2;
+     grid-column: 2 / 4;
+     text-transform: uppercase;
+     letter-spacing: .1em;
+     margin-top: .3em;
+}
+
+@media (min-width: 1400px) {
+     .contenedor-general h1 {
+          margin-top: 1em;
+     }
+}
+
+/* primera caja */
+
+.tipo-pizza {
+     grid-row: 1 / 2;
+     grid-column: 1 / 2;
+     margin-top: 1em;
+}
+
+.formulario-pizza {
+     display: flex;
+     flex-direction: column;
+     margin-left: 1em;
+     margin-top: 1em;
+     margin-bottom: 1em;
+     background: #ebebeb;
+     -webkit-box-shadow: 3px 3px 10px -2px rgba(0,0,0,0.75);
+     -moz-box-shadow: 3px 3px 10px -2px rgba(0,0,0,0.75);
+     box-shadow: 3px 3px 10px -2px rgba(0,0,0,0.75);
+     border-radius: .2em;
+}
+
+/* Sombreado de cajas */
+
+.formulario-pizza legend {
+     padding: .2em;
+     padding-left: .5em;
+     font-size: 1.5em;
+     text-transform: uppercase;
+     background: #1978B3;
+     color: white;
+     letter-spacing: .1em;
+}
+
+.campo {
+     display: flex;
+     flex-direction: column;
+     padding: .5em;
+}
+
+.campo label,
+span.precio-escrito,
+span.precio-cantidad {
+     font-size: 1.2em;
+     margin-bottom: .3em;
+     text-transform: uppercase;
+     letter-spacing: .1em;
+}
+
+.campo.costo-pizzas {
+     flex-direction: row;
+     justify-content: space-between;
+}
+
+span.precio-escrito {
+     margin-top: .5em;
+}
+
+span.precio-cantidad {
+     background: #2F9CFF;
+     color: white;
+     padding: .3em;
+     border-radius: .2em;
+     letter-spacing: .1em;
+     transition: all .3s ease-in;
+}
+
+.generales {
+     font-family: 'Oswald', sans-serif;
+     background: #b8b8b8;
+     border: none;
+     padding: .2em;
+     font-size: 1em;
+     color: black;
+     letter-spacing: .1em;
+     border-radius: .2em;
+     outline: none;
+}
+
+/* segunda caja */
+
+div.ingredientes-extra {
+     grid-row: 2 / 3;
+     grid-column: 1 / 2;
+}
+
+.campo.ingrediente {
+     flex-direction: row;
+     justify-content: space-between;
+}
+
+input[type=checkbox] {
+     position: absolute;
+     opacity: 0;
+}
+
+label.ing-extra {
+     position: relative;
+     cursor: pointer;
+     padding: .5em;
+     border-radius: .2em;
+     font-size: 1em;
+     background: #b8b8b8;
+     transition: all .3s ease-in;
+     text-transform: capitalize;
+}
+
+.campo.ingrediente span.precio-cantidad {
+     margin-right: 3em;
+     background: #b8b8b8;
+     color: black;
+}
+
+input[type=checkbox]:checked + label.ing-extra,
+input[type=checkbox]:checked + label.ing-extra + span.precio-cantidad {
+     background: #2F9CFF;
+     color: white;
+}
+
+/* Tercera caja */
+
+div.paquete-extra {
+     grid-row: 3 / 4;
+     grid-column: 1 / 2;
+}
+
+input.generales.paquete {
+     width: 4em;
+     text-align: center;
+     height: 2.7em;
+     transition: all .3s ease-in;
+}
+input[type=checkbox]:checked + label.ing-extra + input.generales.paquete,
+input[type=checkbox]:checked + label.ing-extra + input.generales.paquete + span.precio-cantidad {
+     background: #2F9CFF;
+     color: white;
+}
+
+.campo.ingrediente span.precio-cantidad.paq-extra {
+     margin-right: .5em;
+}
+
+.campo.ingrediente:nth-child(2) span.precio-escrito:nth-child(2) {
+     margin-left: 3.3em;
+}
+
+.campo.ingrediente:nth-child(4) input.generales.paquete {
+     margin-left: 4.6em;
+}
+
+.campo.ingrediente:nth-child(5) input.generales.paquete {
+     margin-left: 2.8em;
+}
+
+.campo.ingrediente:nth-child(6) input.generales.paquete {
+     margin-left: 1.4em;
+}
+
+/* cuadro orden */
+
+.cuadro-orden {
+     grid-row: 1 / 4;
+     grid-column: 2 / 4;
+     width: 700px;
+     height: 65vh;
+     background: #ebebeb;
+     -webkit-box-shadow: 3px 6px 30px -2px rgba(0,0,0,0.75);
+     -moz-box-shadow: 3px 6px 30px -2px rgba(0,0,0,0.75);
+     box-shadow: 3px 6px 30px -2px rgba(0,0,0,0.75);
+     border-radius: .3em;
+     margin-left: 8%;
+     margin-top: 20%;
+     display: grid;
+     grid-template-columns: repeat(1, 2fr) repeat(3, 1fr);
+     grid-template-rows: repeat(2, 1fr);
+}
+
+@media (min-width: 1400px) {
+     .cuadro-orden {
+          margin-left: 22%;
+          margin-top: 12%;
+          height: 60vh;
+     }
+}
+
+.cuadro-orden .refresco {
+     grid-row: 1 / 2;
+     grid-column: 1 / 2;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.refresco img {
+     width: 120px;
+     height: 220px;
+}
+
+.cuadro-orden .extra-queso {
+     display: flex;
+     align-items: center;
+}
+
+.cuadro-orden .costillas {
+     display: flex;
+     align-items: flex-end;
+}
+
+.cuadro-orden .extrapineapple {
+     display: flex;
+     align-items: flex-start;
+}
+
+.cuadro-orden .pizza-seleccionada {
+     grid-row: 2 / 3;
+     grid-column: 1 / 2;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.pizza-seleccionada img {
+     width: 240px;
+}
+
+.cuadro-orden .donas {
+     display: flex;
+     align-items: center;
+}
+
+.cuadro-orden .payfresa {
+     display: flex;
+     align-items: flex-end;
+}
+
+.cuadro-orden .chocolate {
+     display: flex;
+     align-items: flex-start;
+}
+
+.cuadro-pago {
+     grid-row: 3 / 4;
+     grid-column: 2 / 4;
+     width: 320px;
+     height: 180px;
+     background: #1978B3;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     margin-left: 32%;
+     margin-top: 8%;
+     border-radius: .5em;
+     -webkit-box-shadow: 3px 6px 12px -2px rgba(0,0,0,0.75);
+     -moz-box-shadow: 3px 6px 12px -2px rgba(0,0,0,0.75);
+     box-shadow: 3px 6px 12px -2px rgba(0,0,0,0.75);
+     /* propiedad de inicio */
+     opacity: 0;
+}
+
+@media (min-width: 1400px) {
+     .cuadro-pago {
+          margin-left: 38%;
+          margin-top: 13%;
+     }
+}
+
+.cuadro-pago .total-texto {
+     color: white;
+     font-size: 2em;
+     text-transform: uppercase;
+     letter-spacing: .1em;
+}
+
+.cuadro-pago .total-cantidad {
+     color: white;
+     font-size: 2em;
+     letter-spacing: .1em;
+     margin-top: .2em;
+     margin-bottom: .5em;
+}
+
+.cuadro-pago .btn-pago  {
+     padding: .5em;
+     margin-bottom: .5em;
+     border: none;
+     outline: none;
+     background: black;
+     color: white;
+     font-family: 'Oswald', sans-serif;
+     width: 120px;
+     font-size: 1em;
+     text-transform: uppercase;
+     letter-spacing: .2em;
+     cursor: pointer;
+     border-radius: .5em;
+}
+
+/* ver los estilos para 1280px y para mayor de 1281px */
+
