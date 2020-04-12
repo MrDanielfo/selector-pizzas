@@ -190,6 +190,22 @@ input[type=checkbox]:checked + label.ing-extra + input.generales.paquete + span.
      margin-left: 3.3em;
 }
 
+.campo.ingrediente span.precio-cantidad.preing {
+     margin-right: .5em;
+}
+
+.campo.ingrediente:nth-child(3) input.generales.paquete.exing {
+     margin-left: 4em;
+}
+
+.campo.ingrediente:nth-child(4) input.generales.paquete.exing {
+     margin-left: .5em;
+}
+
+.campo.ingrediente:nth-child(5) input.generales.paquete.exing {
+     margin-left: 5em;
+}
+
 .campo.ingrediente:nth-child(4) input.generales.paquete {
      margin-left: 4.6em;
 }

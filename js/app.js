@@ -11,39 +11,49 @@ let extraQueso = document.getElementById('extra-queso'),
     extraPinneapleMango = document.getElementById('pineapple-mango'),
     costillas = document.getElementById('costillas');
 
-/* paquetes extra */
-let refresco = document.getElementById('refresco'),
-    donas = document.getElementById('donas'),
-    chocolate = document.getElementById('chocolate'),
-    payFresa = document.getElementById('payfresa');
-
-let cantidadRefresco = document.getElementById('cantidad-refresco'),
-     cantidadDonas = document.getElementById('cantidad-donas'),
-     cantidadChocolate = document.getElementById('cantidad-chocolate'),
-     cantidadPay = document.getElementById('cantidad-pay');
+/* Cantidad Ingredientes Extra */
+let cantidadQueso = document.getElementById('num-extraqueso'),
+    cantidadPineapple = document.getElementById('num-extrapineapple'),
+    cantidadCostillas = document.getElementById('num-extracostillas');
 
 /* contenedores ingredientes extra */
 let ctnExtraQueso = document.querySelector('.extra-queso'),
     ctnExtraPineapple = document.querySelector('.extrapineapple'),
     ctnExtraCostillas = document.querySelector('.costillas');
 
+/* Contenedores precio ingredientes extra */
+let ctnCantidadQueso = document.querySelector('.precio-cantidad.preing.paq-queso'),
+     ctnCantidadPineapple = document.querySelector('.precio-cantidad.preing.paq-pineapple'),
+     ctnCantidadCostillas = document.querySelector('.precio-cantidad.preing.paq-costillas');
+
+/* paquetes extra */
+let refresco = document.getElementById('refresco'),
+    donas = document.getElementById('donas'),
+    chocolate = document.getElementById('chocolate'),
+    payFresa = document.getElementById('payfresa');
+
+/* Cantidad Paquetes Extra */
+let cantidadRefresco = document.getElementById('cantidad-refresco'),
+     cantidadDonas = document.getElementById('cantidad-donas'),
+     cantidadChocolate = document.getElementById('cantidad-chocolate'),
+     cantidadPay = document.getElementById('cantidad-pay');
+
 /* contenedores paquetes extra */
 let ctnRefresco = document.querySelector('.refresco'),
     ctnDonas = document.querySelector('.donas'),
     ctnChocolate = document.querySelector('.chocolate'),
     ctnPayFresa = document.querySelector('.payfresa');
-/* Contenedores cantidad paquetes extra */
 
+/* Contenedores precio paquetes extra */
 let ctnCantidadRefresco = document.querySelector('.precio-cantidad.paq-extra.paq-refreso');
 let ctnCantidadDonas = document.querySelector('.precio-cantidad.paq-extra.paq-donas');
 let ctnCantidadChocolate = document.querySelector('.precio-cantidad.paq-extra.paq-chocolate');
 let ctnCantidadPay = document.querySelector('.precio-cantidad.paq-extra.paq-pay')
 
 /* Arreglo de ingredientes extra */ 
-let arregloPreciosExtra = [];
+let arregloIngredientesExtra = [];
 /* Arreglo de paquetes extra */
 let arregloPaquetesExtra = [];
-
 
 /* detectar sabor de pizza */
 pizzaSeleccionada.addEventListener('change', pizzaCantidadSabor)
@@ -96,16 +106,62 @@ function ingredienteExtraQueso(e) {
      let imagen;
      imagen = document.createElement('img');
      if (extraQueso.checked) {
-          precioExtraQueso = parseInt(e.target.parentElement.childNodes[5].innerText.split(' ')[1])
-          arregloPreciosExtra.push(precioExtraQueso);
+          /*  Aquí */
+          cantidadQueso.setAttribute('max', pizzaCantidad.value)
+          if (parseInt(cantidadQueso.value) === 1) {
+               precioExtraQueso = 40;
+               arregloIngredientesExtra.push(precioExtraQueso);
+               calcularPrecioTotal()
+         }
+         /* Condicional para validar que se compre dos pizzas y se habilite la cantidad de extra queso */
+         /* Obtener atributo de pizzas máximas */
+         if (parseInt(pizzaCantidad.value) > 1) {
+               cantidadQueso.setAttribute('max', pizzaCantidad.value)
+               cantidadQueso.getAttribute('max')
+
+               cantidadQueso.addEventListener('change', () => {
+                    cantidadExtraQueso = parseInt(cantidadQueso.value);
+                    if (cantidadExtraQueso === 1) {
+                    precioExtraQueso = 40;
+                    if (arregloIngredientesExtra.length > 1) {
+                         const posicion = (index) => index == precioExtraQueso + 40;
+                         let foundIndex = arregloIngredientesExtra.findIndex(posicion);
+                         arregloIngredientesExtra.splice(foundIndex, 1, precioExtraQueso);
+                    } else {
+                         arregloIngredientesExtra.splice(0, 1, precioExtraQueso);
+                    }    
+                    } else {
+                    precioExtraQueso = 40 * cantidadExtraQueso;
+                    if (arregloIngredientesExtra.length > 1) {
+                         // findIndex()
+                         const posicion = (index) => index == 40 || index == precioExtraQueso - 40 || index == precioExtraQueso + 40;
+                         let foundIndex = arregloIngredientesExtra.findIndex(posicion);
+                         arregloIngredientesExtra.splice(foundIndex, 1, precioExtraQueso);
+                    } else {
+                         arregloIngredientesExtra.splice(0, 1, precioExtraQueso);
+                    }
+                    }
+                    ctnCantidadQueso.innerHTML = '$ ' + precioExtraQueso;
+                    calcularPrecioTotal()
+               })
+         } 
+          /* Hasta aquí */
           imagen.setAttribute('src', 'img/extra-queso2.png');
           imagen.setAttribute('alt', 'extra-queso');
           ctnExtraQueso.appendChild(imagen);
-          calcularPrecioTotal()
+
      } else {
           // console.log(ctnExtraQueso.childNodes)
-          precioExtraQueso = 0;
-          arregloPreciosExtra.splice(0, 1);
+          precioExtraQueso = parseInt(ctnCantidadQueso.innerHTML.split(' ')[1]);
+          if (arregloIngredientesExtra.length > 1) {
+               const precioRemovido = arregloIngredientesExtra.filter( precio => precio !== precioExtraQueso);
+               arregloIngredientesExtra = precioRemovido;
+          } else {
+               arregloIngredientesExtra.splice(0, 1);
+          }
+          
+          cantidadQueso.value = 1;
+          ctnCantidadQueso.innerHTML = '$ ' + 40;
           ctnExtraQueso.removeChild(ctnExtraQueso.childNodes[1])
           calcularPrecioTotal();
      }
@@ -116,37 +172,131 @@ function ingredientePineappleMango(e) {
      let imagen;
      imagen = document.createElement('img');
      if (extraPinneapleMango.checked) {
-          // console.log(e.target.parentElement.childNodes[5])
-           precioExtraPineapple = parseInt(e.target.parentElement.childNodes[5].innerText.split(' ')[1])
-           arregloPreciosExtra.push(precioExtraPineapple);
+
+          /* Aquí */
+          cantidadPineapple.setAttribute('max', pizzaCantidad.value)
+          if (parseInt(cantidadPineapple.value) === 1) {
+               precioExtraPineapple = 45;
+               arregloIngredientesExtra.push(precioExtraPineapple);
+               calcularPrecioTotal()
+         }
+         
+         if (parseInt(pizzaCantidad.value) > 1) {
+               cantidadPineapple.setAttribute('max', pizzaCantidad.value)
+               cantidadPineapple.getAttribute('max')
+
+               cantidadPineapple.addEventListener('change', () => {
+                    cantidadExtraPineapple = parseInt(cantidadPineapple.value);
+                    if (cantidadExtraPineapple === 1) {
+                    precioExtraPineapple = 45;
+                         if (arregloIngredientesExtra.length > 1) {
+                              const posicion = (index) => index == precioExtraPineapple + 45;
+                              let foundIndex = arregloIngredientesExtra.findIndex(posicion);
+                              arregloIngredientesExtra.splice(foundIndex, 1, precioExtraPineapple);
+                         } else {
+                              arregloIngredientesExtra.splice(0, 1, precioExtraPineapple);
+                         }    
+                    } else {
+
+                    precioExtraPineapple = 45 * cantidadExtraPineapple;
+                         if (arregloIngredientesExtra.length > 1) {
+                              // findIndex()
+                              const posicion = (index) => index == 45 || index == precioExtraPineapple - 45 || index == precioExtraPineapple + 45;
+                              let foundIndex = arregloIngredientesExtra.findIndex(posicion);
+                              arregloIngredientesExtra.splice(foundIndex, 1, precioExtraPineapple);
+                         } else {
+                              arregloIngredientesExtra.splice(0, 1, precioExtraPineapple);
+                         }
+                    }
+                    ctnCantidadPineapple.innerHTML = '$ ' + precioExtraPineapple;
+                    calcularPrecioTotal()
+               })
+         } 
+
+          /* Hasta aquí */ 
            imagen.setAttribute('src', 'img/pineappleextra.png');
            imagen.setAttribute('alt', 'pineapple');
            ctnExtraPineapple.appendChild(imagen);
-           calcularPrecioTotal()
+           
      } else {
           
-          precioExtraPineapple = 0;
-          arregloPreciosExtra.splice(0, 1);
+          precioExtraPineapple = parseInt(ctnCantidadPineapple.innerHTML.split(' ')[1]);
+          if (arregloIngredientesExtra.length > 1) {
+               const precioRemovido = arregloIngredientesExtra.filter( precio => precio !== precioExtraPineapple);
+               arregloIngredientesExtra = precioRemovido;
+          } else {
+               arregloIngredientesExtra.splice(0, 1);
+          }
+
+          cantidadPineapple.value = 1;
+          ctnCantidadPineapple.innerHTML = '$ ' + 45;
           ctnExtraPineapple.removeChild(ctnExtraPineapple.childNodes[1])
           calcularPrecioTotal();
      }
 }
 
 function ingredienteCostillas(e) {
-     let precioExtraCostilla;
+     let precioExtraCostillas;
      let imagen;
      imagen = document.createElement('img');
      if (costillas.checked) {
-          // console.log(e.target.parentElement.childNodes[5])
-           precioExtraCostilla = parseInt(e.target.parentElement.childNodes[5].innerText.split(' ')[1])
-           arregloPreciosExtra.push(precioExtraCostilla);
+          /* Aquí */
+          cantidadCostillas.setAttribute('max', pizzaCantidad.value)
+          if (parseInt(cantidadPineapple.value) === 1) {
+               precioExtraCostillas = 50;
+               arregloIngredientesExtra.push(precioExtraCostillas);
+               calcularPrecioTotal()
+         }
+         
+         if (parseInt(pizzaCantidad.value) > 1) {
+               cantidadCostillas.setAttribute('max', pizzaCantidad.value)
+               cantidadCostillas.getAttribute('max')
+
+               cantidadCostillas.addEventListener('change', () => {
+                    cantidadExtraCostillas = parseInt(cantidadCostillas.value);
+                    if (cantidadExtraCostillas === 1) {
+                         precioExtraCostillas = 50;
+                         if (arregloIngredientesExtra.length > 1) {
+                              const posicion = (index) => index == precioExtraCostillas + 50;
+                              let foundIndex = arregloIngredientesExtra.findIndex(posicion);
+                              arregloIngredientesExtra.splice(foundIndex, 1, precioExtraCostillas);
+                         } else {
+                              arregloIngredientesExtra.splice(0, 1, precioExtraCostillas);
+                         }    
+                    } else {
+
+                    precioExtraCostillas = 50 * cantidadExtraCostillas;
+                         if (arregloIngredientesExtra.length > 1) {
+                              // findIndex()
+                              const posicion = (index) => index == 50 || index == precioExtraCostillas - 50 || index == precioExtraCostillas + 50;
+                              let foundIndex = arregloIngredientesExtra.findIndex(posicion);
+                              arregloIngredientesExtra.splice(foundIndex, 1, precioExtraCostillas);
+                         } else {
+                              arregloIngredientesExtra.splice(0, 1, precioExtraCostillas);
+                         }
+                    }
+                    ctnCantidadCostillas.innerHTML = '$ ' + precioExtraCostillas;
+                    calcularPrecioTotal()
+               })
+          } 
+
+          /* Hasta aquí */ 
            imagen.setAttribute('src', 'img/costillas.png');
            imagen.setAttribute('alt', 'costillas');
            ctnExtraCostillas.appendChild(imagen);
-           calcularPrecioTotal()
+
      } else {
-          precioExtraCostilla = 0;
-          arregloPreciosExtra.splice(0, 1);
+
+          precioExtraCostillas = parseInt(ctnCantidadCostillas.innerHTML.split(' ')[1]);
+          if (arregloIngredientesExtra.length > 1) {
+               const precioRemovido = arregloIngredientesExtra.filter( precio => precio !== precioExtraCostillas);
+               arregloIngredientesExtra = precioRemovido;
+          } else {
+               arregloIngredientesExtra.splice(0, 1);
+          }
+
+          cantidadCostillas.value = 1;
+          ctnCantidadCostillas.innerHTML = '$ ' + 50;
           ctnExtraCostillas.removeChild(ctnExtraCostillas.childNodes[1])
           calcularPrecioTotal();
      }
@@ -196,6 +346,7 @@ function paqueteRefresco() {
           })
           imagen.setAttribute('src', 'img/refresco.png');
           imagen.setAttribute('alt', 'refresco');
+          
           ctnRefresco.appendChild(imagen);
      } else {
 
@@ -206,7 +357,7 @@ function paqueteRefresco() {
           } else {
                arregloPaquetesExtra.splice(0, 1);
           }
-          ctnRefresco.removeChild(ctnRefresco.childNodes[3]);
+          ctnRefresco.removeChild(ctnRefresco.childNodes[1]);
           cantidadRefresco.value = 1;
           ctnCantidadRefresco.innerHTML = '$ ' + 40;
           calcularPrecioTotal()
@@ -261,7 +412,7 @@ function paqueteDonas() {
           } else {
                arregloPaquetesExtra.splice(0, 1);
           }
-          ctnDonas.removeChild(ctnDonas.childNodes[3]);
+          ctnDonas.removeChild(ctnDonas.childNodes[1]);
           cantidadDonas.value = 1;
           ctnCantidadDonas.innerHTML = '$ ' + 35;
           calcularPrecioTotal()
@@ -316,7 +467,7 @@ function paqueteChocolate() {
           } else {
                arregloPaquetesExtra.splice(0, 1);
           }
-          ctnChocolate.removeChild(ctnChocolate.childNodes[3]);
+          ctnChocolate.removeChild(ctnChocolate.childNodes[1]);
           cantidadChocolate.value = 1;
           ctnCantidadChocolate.innerHTML = '$ ' + 25;
           calcularPrecioTotal()
@@ -371,7 +522,7 @@ function paquetePay() {
           } else {
                arregloPaquetesExtra.splice(0, 1);
           }
-          ctnPayFresa.removeChild(ctnPayFresa.childNodes[3]);
+          ctnPayFresa.removeChild(ctnPayFresa.childNodes[1]);
           cantidadPay.value = 1;
           ctnCantidadPay.innerHTML = '$ ' + 30;
           calcularPrecioTotal()
@@ -391,9 +542,9 @@ function conteoPizzas() {
 
 function calcularPrecioTotal() {
      // console.log(arregloPreciosExtra)
-     if (arregloPreciosExtra.length > 0 ) {
+     if (arregloIngredientesExtra.length > 0 ) {
           let sumador = (total, actual) => total + actual;
-          let ingredientesExtra = arregloPreciosExtra.reduce(sumador);
+          let ingredientesExtra = arregloIngredientesExtra.reduce(sumador);
           precioTotal.innerHTML = '$' + (parseInt(precioCantidad.innerHTML) + ingredientesExtra); 
 
           if (arregloPaquetesExtra.length > 0) {
